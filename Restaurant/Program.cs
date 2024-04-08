@@ -2,7 +2,6 @@ using Domain.Repositories;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Service.Abstractions;
-using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

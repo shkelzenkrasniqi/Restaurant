@@ -1,46 +1,50 @@
 ﻿using Domain.Entities;
+using Domain.Parameters;
 using Domain.Repositories;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Persistance.Repositories
 {
-    internal sealed class RestaurantRepository(ApplicationDbContext _context) : IRestaurantRepository
+    internal sealed class RestaurantRepository(ApplicationDbContext _context) : GenericRepository<Restaurant>(_context), IRestaurantRepository
     {
-        public async Task AddAsync(Restaurant restaurant)
+        public async Task<List<Restaurant>> GetAllAsync(RestaurantParameters restaurantParameters)
         {
-            await _context.Restaurants.AddAsync(restaurant);
-            await _context.SaveChangesAsync();
-        }
+            if (restaurantParameters == null)
+                throw new ArgumentNullException(nameof(restaurantParameters));
 
-        public async Task<Restaurant> GetByIdAsync(Guid id)
-        {
-            var restaurant = await _context.Restaurants.FindAsync(id);
-            return restaurant ?? throw new InvalidOperationException($"Restaurant with id {id} not found.");
-        }
+            var collection = _context.Restaurants.Include(r => r.Address) as IQueryable<Restaurant>;
 
-        public async Task<IEnumerable<Restaurant>> GetAllAsync()
-        {
-            return await _context.Restaurants
-                                    .Include(r => r.FoodItems)
-                                    .Include(r => r.Address)
-                                    .ToListAsync();
-        }
+            if (!string.IsNullOrWhiteSpace(restaurantParameters.Name))
+                collection = collection.Where(r => r.Name == restaurantParameters.Name);
 
-        public async Task UpdateAsync(Restaurant restaurant)
-        {
-            _context.Restaurants.Update(restaurant);
-            await _context.SaveChangesAsync();
-        }
+            if (!string.IsNullOrWhiteSpace(restaurantParameters.City))
+                collection = collection.Where(r => r.Address.City == restaurantParameters.City);
 
-        public async Task DeleteAsync(Guid id)
-        {
-            var restaurant = await _context.Restaurants.FindAsync(id);
-            if (restaurant != null)
+            if (!string.IsNullOrWhiteSpace(restaurantParameters.Category))
+                collection = collection.Where(r => r.Category == restaurantParameters.Category);
+
+            if (restaurantParameters.HasDelivery != null)
+                collection = collection.Where(r => r.HasDelivery == restaurantParameters.HasDelivery);
+
+            if (!string.IsNullOrWhiteSpace(restaurantParameters.SearchQuery))
             {
-                _context.Restaurants.Remove(restaurant);
-                await _context.SaveChangesAsync();
+                var searchQuery = restaurantParameters.SearchQuery.Trim();
+
+                collection = collection.Where(r =>
+                    r.Name.Contains(searchQuery) ||
+                    r.Description.Contains(searchQuery) ||
+                    r.Category.Contains(searchQuery) ||
+                    r.Address.City.Contains(searchQuery));
             }
+            return await collection.ToListAsync();
+
         }
+        public async Task<Restaurant> GetAsync(Guid id)
+        {
+            return await _context.Restaurants.Include(r => r.Address).FirstOrDefaultAsync(r => r.Id == id);
+        }
+
     }
 }

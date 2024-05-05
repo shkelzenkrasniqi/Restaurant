@@ -1,13 +1,12 @@
 ﻿using Domain.Entities;
+using Domain.Parameters;
 
 namespace Domain.Repositories
 {
-    public interface IFoodItemRepository
+    public interface IFoodItemRepository : IGenericRepository<FoodItem>
     {
-        Task AddAsync(FoodItem foodItem);
-        Task<FoodItem> GetByIdAsync(Guid id);
-        Task<IEnumerable<FoodItem>> GetAllAsync();
-        Task UpdateAsync(FoodItem foodItem);
-        Task DeleteAsync(Guid id);
+        Task<List<FoodItem>> GetAllAsync(Guid restaurantId, FoodItemParameters foodItemParameters);
+        Task<FoodItem> GetAsync(Guid restaurantId, Guid id);
+        Task<bool> RestaurantExists(Guid restaurantId);
     }
 }

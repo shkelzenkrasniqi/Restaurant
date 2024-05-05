@@ -1,13 +1,11 @@
 ﻿using Domain.Entities;
+using Domain.Parameters;
 
 namespace Domain.Repositories
 {
-    public interface IRestaurantRepository
+    public interface IRestaurantRepository: IGenericRepository<Restaurant>
     {
-        Task AddAsync(Restaurant restaurant);
-        Task<Restaurant> GetByIdAsync(Guid id);
-        Task<IEnumerable<Restaurant>> GetAllAsync();
-        Task UpdateAsync(Restaurant restaurant);
-        Task DeleteAsync(Guid id);
+        Task<List<Restaurant>> GetAllAsync(RestaurantParameters restaurantParameters);
+        Task<Restaurant> GetAsync(Guid id);
     }
 }

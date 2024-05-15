@@ -7,10 +7,8 @@ using Shared.DTOs;
 
 namespace Services
 {
-    public class RestaurantService(IRestaurantRepository restaurantRepository, IMapper mapper) : IRestaurantService
+    public class RestaurantService(IRestaurantRepository _restaurantRepository, IMapper _mapper) : IRestaurantService
     {
-        private readonly IRestaurantRepository _restaurantRepository = restaurantRepository;
-        private readonly IMapper _mapper = mapper;
 
         public async Task AddAsync(RestaurantDTO restaurantDTO)
         {
@@ -20,7 +18,6 @@ namespace Services
 
         public async Task DeleteAsync(Guid id)
         {
-
             var restaurantEntity = await _restaurantRepository.GetAsync(id);
             await _restaurantRepository.DeleteAsync(restaurantEntity);
         }

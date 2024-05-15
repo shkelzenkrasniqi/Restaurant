@@ -2,11 +2,6 @@
 using Domain.Entities;
 using Domain.Parameters;
 using Shared.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -18,6 +13,7 @@ namespace Services
             CreateMap<FoodItem, FoodItemDTO>().ReverseMap();
             CreateMap<Address, AddressDTO>().ReverseMap();
             CreateMap<RestaurantParameters, RestaurantParametersDTO>().ReverseMap();
+            CreateMap<FoodItemParameters, FoodItemParametersDTO>().ReverseMap();
             //CreateMap<AppUser, UserDto>().ReverseMap();
         }
     }

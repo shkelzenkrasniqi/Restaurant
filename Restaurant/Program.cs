@@ -2,12 +2,16 @@ using Domain.Repositories;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Service.Abstractions;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
                 .AddApplicationPart(typeof(Presantation.AssemblyReference).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
+RepositoryDIConfiguration.Configure(builder.Services);
+ServicesDIConfiguration.Configure(builder.Services, builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

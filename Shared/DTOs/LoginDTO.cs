@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Repositories
+namespace Shared.DTOs
 {
-    public interface IRepositoryManager
+    public class LoginDTO
     {
-
-
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -11,6 +11,8 @@ namespace Services
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<IFoodItemService, FoodItemService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAccountService, AccountService>();
         }
     }
 }

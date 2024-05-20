@@ -14,7 +14,7 @@ namespace Services
             CreateMap<Address, AddressDTO>().ReverseMap();
             CreateMap<RestaurantParameters, RestaurantParametersDTO>().ReverseMap();
             CreateMap<FoodItemParameters, FoodItemParametersDTO>().ReverseMap();
-            //CreateMap<AppUser, UserDto>().ReverseMap();
+            CreateMap<AppUser, UserDTO>().ReverseMap();
         }
     }
 }

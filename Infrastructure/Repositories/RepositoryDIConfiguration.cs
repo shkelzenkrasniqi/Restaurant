@@ -15,8 +15,6 @@ namespace Domain.Repositories
         {
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
             services.AddScoped<IFoodItemRepository, FoodItemRepository>();
-            //services.AddScoped<IGenericRepository<Restaurant>, GenericRepository<Restaurant>>();
-           // services.AddScoped<IGenericRepository<FoodItem>, GenericRepository<FoodItem>>();
         }
     }
 }
